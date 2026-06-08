@@ -1,9 +1,11 @@
-# TODO: Member 3 System Pipeline
-# - src/selection.py (Tournament selection k=3)
-#
-#   Implements tournament selection:
-#       - Draw a random sample of k=3 routes from the population.
-#       - Compare total path costs across the subset.
-#       - Return the route with the shortest distance as the selected parent.
-#
-# PLACEHOLDER: Member 3 System Pipeline logic to be inserted here
+import random
+
+
+def tournament_selection(population):
+    """Select a parent using tournament selection over 3 random routes."""
+    if len(population) < 3:
+        raise ValueError("Population must contain at least 3 routes for tournament selection.")
+
+    tournament = random.sample(population, 3)
+    winner = min(tournament, key=lambda route: route.distance)
+    return winner

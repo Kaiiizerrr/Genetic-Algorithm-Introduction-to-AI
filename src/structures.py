@@ -26,10 +26,11 @@ class Location:
     y  : float  Y-coordinate on the spatial grid.
     """
 
-    def __init__(self, id: int, x: float, y: float) -> None:
-        self.id: int   = id
-        self.x:  float = float(x)
-        self.y:  float = float(y)
+    def __init__(self, id: int, x: float, y: float, name: str | None = None) -> None:
+        self.id: int          = id
+        self.x:  float        = float(x)
+        self.y:  float        = float(y)
+        self.name: str | None = name
 
     # ── Equality and hashing based on ID ─────────────────────────────────────
     # Required so Location objects can be stored in sets and used as dict keys.
@@ -44,6 +45,8 @@ class Location:
         return hash(self.id)
 
     def __repr__(self) -> str:
+        if self.name:
+            return f"Location(id={self.id}, name={self.name!r}, x={self.x}, y={self.y})"
         return f"Location(id={self.id}, x={self.x}, y={self.y})"
 
 
@@ -120,7 +123,10 @@ class Route:
     # ── Representation ────────────────────────────────────────────────────────
 
     def __repr__(self) -> str:
-        path = [loc.id for loc in self.vertices]
+        path = [
+            f"{loc.id}:{loc.name}" if getattr(loc, "name", None) else str(loc.id)
+            for loc in self.vertices
+        ]
         return (
             f"Route("
             f"path={path}, "
